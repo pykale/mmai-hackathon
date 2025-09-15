@@ -9,6 +9,8 @@
 
 This repository provides the base source code for the MultimodalAI'25 workshop Hackathon. It is designed to help participants get started quickly with a pre-configured Python environment and essential dependencies for development and testing.
 
+Further details about the hackathon are available on the [Wiki webpage](https://github.com/pykale/mmai-hackathon/wiki).
+
 ## Requirements
 
 - Python 3.10, 3.11, or 3.12
@@ -83,11 +85,29 @@ echo "Using PyG wheel index: $PYG_INDEX"
 
 More details: https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html
 
-### 3) (Optional) Pre‑commit hooks
+### 3) Pre‑commit hooks
 
-```bash
-pre-commit install
-```
+This repository uses pre-commit hooks to ensure code quality and consistency. To set up pre-commit hooks locally, follow these steps:
+
+1. Install the `pre-commit` package if you haven't already:
+
+   ```bash
+   pip install pre-commit
+   ```
+
+2. Install the hooks defined in the `.pre-commit-config.yaml` file:
+
+   ```bash
+   pre-commit install
+   ```
+
+3. Run the hooks manually on all files (optional):
+
+   ```bash
+   pre-commit run --all
+   ```
+
+Pre-commit hooks will now run automatically on every commit to check and format your code.
 
 ### 4) Run tests
 
@@ -98,6 +118,10 @@ pytest
 ## Example data
 
 Example data can be downloaded from [this Dropbox folder](https://www.dropbox.com/scl/fo/8xjlsri0zcov20v8xsyxa/AOMpquFinnQnp287lT5hxJM?rlkey=1h1sm3wxd4s1oeygludri6hr6&st=cg0qdhic&dl=0). No Dropbox account is required to access the files.
+
+## Sample `Dataset` and `DataLoader` design
+
+![sample-dataloader-design.jpg](./imgs/sample-dataloader-design.jpg)
 
 ## Notes
 
