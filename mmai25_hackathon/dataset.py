@@ -52,6 +52,7 @@ class BaseDataset(Dataset):
 
     def __repr__(self) -> str:
         """Return a string representation of the dataset."""
+        
         return f"{self.__class__.__name__}({self.extra_repr()})"
 
     def extra_repr(self) -> str:
@@ -105,19 +106,21 @@ class CXRDataset(BaseDataset):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
 
 class ECGDataset(BaseDataset):
     """Example subclass for an ECG dataset."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
 
 class ClinicalNotes(BaseDataset):
     """Example subclass for a Clinical Notes dataset."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
 
 class BaseDataLoader(DataLoader):
     """
@@ -157,7 +160,7 @@ class ID_Mapper(BaseDataLoader):
     
     def __create_mapper_(self):
         """Function to creatre the mapper"""
-        self.mapper = pd.DataFrame()
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
     
     def __len__(self) -> int:
         """Return the number of samples in the dataset."""
@@ -189,5 +192,6 @@ class MultimodalDataSampler(BaseSampler):
 
     def subject_extract():
         """Return all the info from a specific subject"""
-        return
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
+
 
