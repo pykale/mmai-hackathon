@@ -12,10 +12,10 @@ Classes:
     BaseSampler: Template for custom samplers, e.g., for multimodal sampling.
 """
 
+import load_data
+import pandas as pd
 from torch.utils.data import Dataset, Sampler
 from torch_geometric.data import DataLoader
-import pandas as pd
-import load_data
 
 __all__ = ["BaseDataset", "BaseDataLoader", "BaseSampler"]
 
@@ -53,7 +53,7 @@ class BaseDataset(Dataset):
 
     def __repr__(self) -> str:
         """Return a string representation of the dataset."""
-        
+
         return f"{self.__class__.__name__}({self.extra_repr()})"
 
     def extra_repr(self) -> str:
@@ -75,9 +75,9 @@ class BaseDataset(Dataset):
             Note: This is not mandatory; treat it as a sketch you can refine or replace.
         """
         raise NotImplementedError("Subclasses may implement __add__ method if needed.")
-    
+
     def __subject_list__(self):
-        """Return a list with all the subject ids found in the dataset. """
+        """Return a list with all the subject ids found in the dataset."""
 
     @classmethod
     def prepare_data(cls, *args, **kwargs):
@@ -108,9 +108,10 @@ class CXRDataset(BaseDataset):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
-    
-    def extract_cxr():
+
+    def extract_cxr(sefl):
         load_data.load_chest_xray_image()
+
 
 class ECGDataset(BaseDataset):
     """Example subclass for an ECG dataset."""
@@ -119,12 +120,14 @@ class ECGDataset(BaseDataset):
         super().__init__(*args, **kwargs)
         raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
 
+
 class ClinicalNotes(BaseDataset):
     """Example subclass for a Clinical Notes dataset."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
+
 
 class BaseDataLoader(DataLoader):
     """
@@ -148,24 +151,27 @@ class BaseDataLoader(DataLoader):
         Note: This is not a hard requirement. Consider it a future-facing idea you can evolve.
     """
 
+
 class MultimodalDataLoader(BaseDataLoader):
     """Example dataloader for handling multiple data modalities."""
 
     def __init__(self, data_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.data_list = data_list
-    
+
+
 class ID_Mapper(BaseDataLoader):
     """ID Mapper for validating all IDs found accross the modalities list"""
+
     def __init__(self, data_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.data_list = data_list
         self.mapper = pd.DataFrame()
-    
+
     def __create_mapper_(self):
         """Function to creatre the mapper"""
         raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
-    
+
     def __len__(self) -> int:
         """Return the number of samples in the dataset."""
         raise NotImplementedError("Subclasses must implement __len__ method.")
@@ -173,7 +179,8 @@ class ID_Mapper(BaseDataLoader):
     def __getitem__(self, idx: int):
         """Return a single sample from the dataset."""
         raise NotImplementedError("Subclasses must implement __getitem__ method.")
-    
+
+
 class BaseSampler(Sampler):
     """
     Base sampler to extend for custom sampling strategies.
@@ -187,6 +194,7 @@ class BaseSampler(Sampler):
         Note: This is optional and meant as a design hint, not a constraint.
     """
 
+
 class MultimodalDataSampler(BaseSampler):
     """Example dataloader for handling multiple data modalities."""
 
@@ -194,8 +202,6 @@ class MultimodalDataSampler(BaseSampler):
         super().__init__(*args, **kwargs)
         self.data_list = data_list
 
-    def subject_extract():
+    def subject_extract(self):
         """Return all the info from a specific subject"""
         raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
-
-
