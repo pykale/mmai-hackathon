@@ -77,8 +77,8 @@ def test_base_dataloader_batches_graphs() -> None:
         def __getitem__(self, idx: int) -> Data:  # type: ignore[name-defined]
             return self._graphs[idx]
 
-    ds = GraphDataset()
-    loader = BaseDataLoader(ds, batch_size=2, shuffle=False)
+    ds = GraphDataset()  # type: ignore[arg-type]
+    loader = BaseDataLoader(ds, batch_size=2, shuffle=False)  # type: ignore[arg-type]
 
     total_graphs = 0
     for batch in loader:
