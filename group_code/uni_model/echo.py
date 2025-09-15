@@ -1,21 +1,24 @@
-from mmai25_hackathon.dataset import * 
-from mmai25_hackathon.load_data.echo import * 
+# noqa: F403
 from torch.utils.data import Dataset
+
+from mmai25_hackathon.load_data.echo import load_echo_dicom, load_mimic_iv_echo_record_list
 
 
 class ECHO_uni(Dataset):
     def __init__(self, mod_root):
         self.records = load_mimic_iv_echo_record_list(mod_root)
-        
+
     def __len__(self) -> int:
         return len(self.records)
-    
+
     def __getitem__(self, idx: int):
         subject_id = self.records.iloc[idx]["subject_id"]
-        sig, fields = load_echo_record(self.records.iloc[idx]["echo_path"])
+        frames, meta = load_echo_dicom(self.records.iloc[idx]["echo_path"])
+        meta_filtered = {
+            k: meta[k] for k in ("NumberOfFrames", "Rows", "Columns", "FrameTime", "CineRate") if k in meta
+        }
+        return {subject_id: meta_filtered}
 
-        return {subject_id: [sig, fields]}
-    
     def get_idx_by_subject(self, subject_id):
         return self.records.index[self.records["subject_id"] == subject_id][0]
 
