@@ -1,0 +1,13 @@
+{
+    "rule_sets": [
+        {
+            "matching_content_path": "**/*",
+            "rules": [
+                {
+                    "name": "Excess Number of Function Arguments",
+                    "weight": 0.0
+                }
+            ]
+        }
+    ]
+}
