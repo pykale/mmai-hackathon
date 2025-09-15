@@ -37,3 +37,6 @@ class EEE_dataset(BaseDataset):
         for mod, r_path in zip(data_mods, data_roots):
             if mod == "ecg":
                 self.uni_dict[mod] = ECG_uni(r_path)
+
+    def get_idx_from_sub_id(self, subject_id):
+        return self.combined_records.index[self.combined_records["subject_id"] == subject_id][0]
