@@ -17,7 +17,7 @@ import pandas as pd
 from torch.utils.data import Dataset, Sampler
 from torch_geometric.data import DataLoader
 
-__all__ = ["BaseDataset", "BaseDataLoader", "BaseSampler"]
+__all__ = ["BaseDataset", "BaseDataLoader", "BaseSampler", "MultimodalDataLoader"]
 
 
 class BaseDataset(Dataset):
@@ -107,6 +107,7 @@ class CXRDataset(BaseDataset):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        relative_path = "mimic-iv/mimic-cxr-jpg-chest-radiographs-with-structured-labels-2.1.0/"  # noqa: F841
         raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
 
     def extract_cxr(sefl):
@@ -150,6 +151,16 @@ class BaseDataLoader(DataLoader):
         in that batch, keeping iteration simple and robust.
         Note: This is not a hard requirement. Consider it a future-facing idea you can evolve.
     """
+
+    def __init__(self, dataset, batch_size=1, shuffle=False, follow_batch=None, exclude_keys=None, **kwargs):
+        super().__init__(
+            dataset,
+            batch_size=batch_size,
+            shuffle=shuffle,
+            follow_batch=follow_batch,
+            exclude_keys=exclude_keys,
+            **kwargs,
+        )
 
 
 class MultimodalDataLoader(BaseDataLoader):
