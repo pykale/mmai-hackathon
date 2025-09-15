@@ -87,11 +87,27 @@ More details: https://pytorch-geometric.readthedocs.io/en/latest/notes/installat
 
 ### 3) Pre‑commit hooks
 
-```bash
-pre-commit install
-```
+This repository uses pre-commit hooks to ensure code quality and consistency. To set up pre-commit hooks locally, follow these steps:
 
-Then open terminal and navigate to the repository folder, and you can use `pre-commit run --all` to check all files.
+1. Install the `pre-commit` package if you haven't already:
+
+   ```bash
+   pip install pre-commit
+   ```
+
+2. Install the hooks defined in the `.pre-commit-config.yaml` file:
+
+   ```bash
+   pre-commit install
+   ```
+
+3. Run the hooks manually on all files (optional):
+
+   ```bash
+   pre-commit run --all
+   ```
+
+Pre-commit hooks will now run automatically on every commit to check and format your code.
 
 ### 4) Run tests
 
@@ -102,6 +118,10 @@ pytest
 ## Example data
 
 Example data can be downloaded from [this Dropbox folder](https://www.dropbox.com/scl/fo/8xjlsri0zcov20v8xsyxa/AOMpquFinnQnp287lT5hxJM?rlkey=1h1sm3wxd4s1oeygludri6hr6&st=cg0qdhic&dl=0). No Dropbox account is required to access the files.
+
+## Sample `Dataset` and `DataLoader` design
+
+![sample-dataloader-design.jpg](./imgs/sample-dataloader-design.jpg)
 
 ## Notes
 
