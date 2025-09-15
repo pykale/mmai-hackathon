@@ -9,6 +9,8 @@
 
 This repository provides the base source code for the MultimodalAI'25 workshop Hackathon. It is designed to help participants get started quickly with a pre-configured Python environment and essential dependencies for development and testing.
 
+Further details about the hackathon are available on the [Wiki webpage](https://github.com/pykale/mmai-hackathon/wiki).
+
 ## Requirements
 
 - Python 3.10, 3.11, or 3.12
@@ -83,11 +85,13 @@ echo "Using PyG wheel index: $PYG_INDEX"
 
 More details: https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html
 
-### 3) (Optional) Pre‑commit hooks
+### 3) Pre‑commit hooks
 
 ```bash
 pre-commit install
 ```
+
+Then open terminal and navigate to the repository folder, and you can use `pre-commit run --all` to check all files.
 
 ### 4) Run tests
 
