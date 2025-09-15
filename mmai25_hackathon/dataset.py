@@ -15,6 +15,7 @@ Classes:
 from torch.utils.data import Dataset, Sampler
 from torch_geometric.data import DataLoader
 import pandas as pd
+import load_data
 
 __all__ = ["BaseDataset", "BaseDataLoader", "BaseSampler"]
 
@@ -107,6 +108,9 @@ class CXRDataset(BaseDataset):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
+    
+    def extract_cxr():
+        load_data.load_chest_xray_image()
 
 class ECGDataset(BaseDataset):
     """Example subclass for an ECG dataset."""
