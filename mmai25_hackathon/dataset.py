@@ -12,10 +12,12 @@ Classes:
     BaseSampler: Template for custom samplers, e.g., for multimodal sampling.
 """
 
+import load_data
+import pandas as pd
 from torch.utils.data import Dataset, Sampler
 from torch_geometric.data import DataLoader
 
-__all__ = ["BaseDataset", "BaseDataLoader", "BaseSampler"]
+__all__ = ["BaseDataset", "BaseDataLoader", "BaseSampler", "MultimodalDataLoader"]
 
 
 class BaseDataset(Dataset):
@@ -51,6 +53,7 @@ class BaseDataset(Dataset):
 
     def __repr__(self) -> str:
         """Return a string representation of the dataset."""
+
         return f"{self.__class__.__name__}({self.extra_repr()})"
 
     def extra_repr(self) -> str:
@@ -72,6 +75,9 @@ class BaseDataset(Dataset):
             Note: This is not mandatory; treat it as a sketch you can refine or replace.
         """
         raise NotImplementedError("Subclasses may implement __add__ method if needed.")
+
+    def __subject_list__(self):
+        """Return a list with all the subject ids found in the dataset."""
 
     @classmethod
     def prepare_data(cls, *args, **kwargs):
@@ -101,6 +107,11 @@ class CXRDataset(BaseDataset):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        relative_path = "mimic-iv/mimic-cxr-jpg-chest-radiographs-with-structured-labels-2.1.0/"  # noqa: F841
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
+
+    def extract_cxr(sefl):
+        load_data.load_chest_xray_image()
 
 
 class ECGDataset(BaseDataset):
@@ -108,6 +119,15 @@ class ECGDataset(BaseDataset):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
+
+
+class ClinicalNotes(BaseDataset):
+    """Example subclass for a Clinical Notes dataset."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
 
 
 class BaseDataLoader(DataLoader):
@@ -132,6 +152,16 @@ class BaseDataLoader(DataLoader):
         Note: This is not a hard requirement. Consider it a future-facing idea you can evolve.
     """
 
+    def __init__(self, dataset, batch_size=1, shuffle=False, follow_batch=None, exclude_keys=None, **kwargs):
+        super().__init__(
+            dataset,
+            batch_size=batch_size,
+            shuffle=shuffle,
+            follow_batch=follow_batch,
+            exclude_keys=exclude_keys,
+            **kwargs,
+        )
+
 
 class MultimodalDataLoader(BaseDataLoader):
     """Example dataloader for handling multiple data modalities."""
@@ -139,6 +169,27 @@ class MultimodalDataLoader(BaseDataLoader):
     def __init__(self, data_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.data_list = data_list
+
+
+class ID_Mapper(BaseDataLoader):
+    """ID Mapper for validating all IDs found accross the modalities list"""
+
+    def __init__(self, data_list, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.data_list = data_list
+        self.mapper = pd.DataFrame()
+
+    def __create_mapper_(self):
+        """Function to creatre the mapper"""
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
+
+    def __len__(self) -> int:
+        """Return the number of samples in the dataset."""
+        raise NotImplementedError("Subclasses must implement __len__ method.")
+
+    def __getitem__(self, idx: int):
+        """Return a single sample from the dataset."""
+        raise NotImplementedError("Subclasses must implement __getitem__ method.")
 
 
 class BaseSampler(Sampler):
@@ -153,3 +204,15 @@ class BaseSampler(Sampler):
         balanced or paired sampling before passing to `BaseDataLoader`.
         Note: This is optional and meant as a design hint, not a constraint.
     """
+
+
+class MultimodalDataSampler(BaseSampler):
+    """Example dataloader for handling multiple data modalities."""
+
+    def __init__(self, data_list, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.data_list = data_list
+
+    def subject_extract(self):
+        """Return all the info from a specific subject"""
+        raise NotImplementedError("Subclasses may implement prepare_data class method if needed.")
