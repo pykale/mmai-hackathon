@@ -37,6 +37,10 @@ class EEE_dataset(BaseDataset):
         for mod, r_path in zip(data_mods, data_roots):
             if mod == "ecg":
                 self.uni_dict[mod] = ECG_uni(r_path)
+        self.combined_records = combine_dataframes(
+            [val.records for key, val in self.uni_dict.items() if key != "ehr"],
+            [key for key, val in self.uni_dict.items() if key != "ehr"],
+        )
 
     def get_idx_from_sub_id(self, subject_id):
         return self.combined_records.index[self.combined_records["subject_id"] == subject_id][0]
