@@ -1,6 +1,8 @@
+from group_code.uni_model.ehr import EHR_uni
 from mmai25_hackathon.dataset import * 
 from group_code.uni_model.ecg import * 
 from group_code.helper import * 
+from group_code.uni_model.ehr import * 
 
 class EEE_dataset(BaseDataset):
     def __init__(self, data_roots, data_mods):
@@ -8,7 +10,10 @@ class EEE_dataset(BaseDataset):
         for mod, r_path in zip(data_mods, data_roots):
             if mod == 'ecg':
                 uni_dict[mod] = ECG_uni(r_path)
-            
+            elif mod == 'ehr':
+                uni_dict[mod] = EHR_uni(r_path)
+            else: 
+                print("Modality not supported.")
 
         self.combined_records = combine_dataframes(
             [uni.records for uni in uni_dict.values()], 
