@@ -1,5 +1,6 @@
 from mmai25_hackathon.dataset import * 
 from mmai25_hackathon.load_data.ecg import * 
+from torch.utils.data import Dataset
 
 class ECG_uni(Dataset):
     def __init__(self, mod_root):

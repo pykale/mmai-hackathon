@@ -6,18 +6,18 @@ from group_code.uni_model.ehr import *
 
 class EEE_dataset(BaseDataset):
     def __init__(self, data_roots, data_mods):
-        uni_dict = {}
+        self.uni_dict = {}
         for mod, r_path in zip(data_mods, data_roots):
             if mod == 'ecg':
-                uni_dict[mod] = ECG_uni(r_path)
+                self.uni_dict[mod] = ECG_uni(r_path)
             elif mod == 'ehr':
-                uni_dict[mod] = EHR_uni(r_path)
+                self.uni_dict[mod] = EHR_uni(r_path)
             else: 
                 print("Modality not supported.")
 
         self.combined_records = combine_dataframes(
-            [uni.records for uni in uni_dict.values()], 
-            uni_dict.keys())
+            [val.records for key, val in self.uni_dict.items() if key != 'ehr'], 
+            [key for key, val in self.uni_dict.items() if key != 'ehr'])
 
     def __len__(self) -> int:
         return len(self.combined_records)
